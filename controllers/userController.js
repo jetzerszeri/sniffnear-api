@@ -1,4 +1,5 @@
-const userModel = require('../models/UserModel.js');
+const userModel = require('../models/userModel.js');
+const petModel = require('../models/petModel.js');
 const bcrypt = require('bcrypt');
 const salt = 10;
 const jwt = require('jsonwebtoken');
@@ -66,8 +67,9 @@ exports.getUserById = async (req, res) => {
         }
 
         //luego hay que buscar las mascotas del user y devolverlas en el json
+        const pets = await petModel.find({owner: userId});
 
-        res.status(200).json({user});
+        res.status(200).json({user, pets});
 
     }catch(error){
         console.log(error);
