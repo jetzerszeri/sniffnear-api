@@ -54,3 +54,23 @@ exports.getAllUsers = async (req, res) => {
         res.status(500).json({message: 'Hubo un error en el servidor'});
     }
 }
+
+exports.getUserById = async (req, res) => {
+    try{
+
+        const { id } = req.params;
+        const user = await userModel.findById(id);
+
+        if (!user){
+            return res.status(404).json({message: 'Usuario no encontrado'});
+        }
+
+        //luego hay que buscar las mascotas del user y devolverlas en el json
+
+        res.status(200).json({user});
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({message: 'Hubo un error en el servidor'});
+    }
+}
