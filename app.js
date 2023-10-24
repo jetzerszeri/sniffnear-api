@@ -1,11 +1,13 @@
 const express = require('express');
 const dataBase = require('./dataBase');
 const routerApi = require('./routes');
+const cors = require('cors');
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(cors());
 
 //me conecto a la DB
 dataBase.once('error', () => console.log('Error al conectar a la DB'));

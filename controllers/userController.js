@@ -38,7 +38,7 @@ exports.addUser = async (req, res) => {
 
         await user.save();
 
-        res.status(201).json({ message: 'Usuario creado con éxito', user });
+        res.status(201).json({ message: 'Usuario creado con éxito', user, userId: user._id });
 
     } catch (error) {
         console.log(error);
