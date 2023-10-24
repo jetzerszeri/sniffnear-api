@@ -114,3 +114,22 @@ exports.updateUser = async (req, res) => {
         res.status(500).json({message: 'Hubo un error en el servidor'});
     }
 };
+
+exports.deleteUser = async (req, res) => {
+    try{
+        const id = req.params.userId;
+        const filter = {_id: id};
+
+        const result = await userModel.deleteOne(filter);
+
+        if (!result){
+            return res.status(404).json({message: 'No se encontró ningún usuario con ese id'});
+        }
+
+        res.status(200).json({message: 'Usuario eliminado con éxito', result});
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({message: 'Hubo un error en el servidor'});
+    }
+};
