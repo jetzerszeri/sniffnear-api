@@ -8,6 +8,25 @@ exports.addUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
+        if (!name || name.trim().length === 0 || name.length < 3) {
+            return res.status(400).json({ message: 'Nombre no válido' });
+        };
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!email || !email.match(emailRegex)) {
+            return res.status(400).json({ message: 'Correo electrónico no válido' });
+        };
+
+        const usuario = await userModel.findOne({email});
+        if (usuario){
+            return res.status(404).json({message: 'El email ya está registrado'});
+        }
+
+        if (!password || password.length < 6) {
+            return res.status(400).json({ message: 'Contraseña no válida' });
+        };
+
         const passwordHash = await bcrypt.hash(password, salt);
 
         const user = new userModel({
