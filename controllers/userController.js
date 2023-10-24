@@ -44,3 +44,13 @@ exports.addUser = async (req, res) => {
         res.status(500).json({message: 'Hubo un error en el servidor'});
     }
 }
+
+exports.getAllUsers = async (req, res) => {
+    try{
+        const users = await userModel.find();
+        res.status(200).json({users});
+    }catch(error){
+        console.log(error);
+        res.status(500).json({message: 'Hubo un error en el servidor'});
+    }
+}
