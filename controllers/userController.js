@@ -135,3 +135,39 @@ exports.deleteUser = async (req, res) => {
         res.status(500).json({message: 'Hubo un error en el servidor'});
     }
 };
+
+exports.auth = async (req, res) => {
+    try{
+        const {email, password} = req.body;
+
+        if (!email || !password){
+            return res.status(400).json({message: 'Email y contraseña son requeridos'});
+        }
+    
+        const user = await userModel.findOne({email});
+        if (!user){
+            return res.status(404).json({message: 'No se encontró ningun usuario con ese email'});
+        }
+    
+        //verifico si es el email correcto:
+        const passwordMatch = await bcrypt.compare(password, user.password);
+    
+        if (!passwordMatch){
+            return res.status(404).json({message: 'Credenciales inválidas'});
+        }
+    
+        //genero el token:
+        const token = jwt.sign({userId: user._id}, clave, {expiresIn: '1h'});
+    
+        //envío la respuesta:
+        res.status(200).json({
+            message: 'Autenticación exitosa', 
+            userId: user._id,
+            token
+        });
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({message: 'Hubo un error en el servidor'});
+    }
+};
