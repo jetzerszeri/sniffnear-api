@@ -12,9 +12,13 @@ const petSchema = new Schema({
         required: true,
     },
     age: Number,
+    birthdate: Date,
+    color1: String,
+    color2: String,
     description: String,
     img: String,
     sex: String,
+    size: String,
     owner:{
         type : Schema.Types.ObjectId , 
         ref:'User'

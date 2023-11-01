@@ -5,7 +5,7 @@ const petModel = require('../models/petModel');
 exports.addPet = async (req, res) => {
     try{
 
-        const { name, breed, type, age, description, img, owner, sex } = req.body;
+        const { name, breed, type, birthdate, description, img, owner, sex, color1, color2, size } = req.body;
         if (!name || !type) {
             return res.status(400).json({ msg: 'Los campos name y type son obligatorios' });
         }
@@ -14,11 +14,14 @@ exports.addPet = async (req, res) => {
             name,
             breed,
             type,
-            age,
+            birthdate,
             description,
             img,
             owner,
             sex,
+            color1,
+            color2,
+            size
         });
 
         await pet.save();
