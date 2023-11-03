@@ -3,18 +3,31 @@ const Alert = require('../models/alertModel');
 // Crear una nueva alerta
 exports.crearAlerta = async (req, res) => {
   try {
-    const { title, description, pet, status } = req.body;
+    const {alertType, type, size, color1, color2, breed, description, latitude, longitude, date, time, img, personName, email, password, creator, pet, status } = req.body;
 
-    const userId = req.usuario; 
-    if(!title || !description || !status){
-      return res.status(400).json({msg:'Los campos de titulo y descripcion o estado  no pueden estar vacios'})
-    }
+    // const userId = req.usuario; 
+    // if(!alertType || !description || !status){
+    //   return res.status(400).json({msg:'Los campos de titulo y descripcion o estado  no pueden estar vacios'})
+    // }
     const alerta = new Alert({
-      title,
-      description,
-      pet,
-      status,
-      creator : userId,
+      alertType, 
+      type, 
+      size, 
+      color1, 
+      color2, 
+      breed, 
+      description, 
+      latitude, 
+      longitude, 
+      date, 
+      time, 
+      img, 
+      personName, 
+      email, 
+      password, 
+      creator, 
+      pet, 
+      status
     });
 
    
