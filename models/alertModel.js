@@ -8,6 +8,9 @@ const alertSchema = new Schema({
     type: {
         type: String,
     },
+    petName: {
+        type: String,
+    },
     sex: {
         type: String,
     },

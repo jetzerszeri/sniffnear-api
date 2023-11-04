@@ -29,6 +29,7 @@ exports.crearAlerta = async (req, res) => {
       pet, 
       status,
       sex,
+      petName,
     });
 
    
