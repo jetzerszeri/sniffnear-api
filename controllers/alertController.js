@@ -3,7 +3,7 @@ const Alert = require('../models/alertModel');
 // Crear una nueva alerta
 exports.crearAlerta = async (req, res) => {
   try {
-    const {alertType, type, size, color1, color2, breed, description, latitude, longitude, date, time, img, personName, email, password, creator, pet, status } = req.body;
+    const {alertType, type, size, color1, color2, breed, description, latitude, longitude, date, time, img, personName, email, password, creator, pet, status, sex } = req.body;
 
     // const userId = req.usuario; 
     // if(!alertType || !description || !status){
