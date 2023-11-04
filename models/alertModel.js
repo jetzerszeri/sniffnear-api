@@ -8,6 +8,9 @@ const alertSchema = new Schema({
     type: {
         type: String,
     },
+    sex: {
+        type: String,
+    },
     size: {
         type: String,
     },
@@ -58,6 +61,7 @@ const alertSchema = new Schema({
     },
     status:{
         type: String,
+        default: 'active'
     }
 
 })

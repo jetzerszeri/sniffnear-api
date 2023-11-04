@@ -27,7 +27,8 @@ exports.crearAlerta = async (req, res) => {
       password, 
       creator, 
       pet, 
-      status
+      status,
+      sex,
     });
 
    
