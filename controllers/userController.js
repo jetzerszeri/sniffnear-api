@@ -163,7 +163,8 @@ exports.auth = async (req, res) => {
         res.status(200).json({
             message: 'Autenticación exitosa', 
             userId: user._id,
-            token
+            token,
+            user
         });
 
     }catch(error){
