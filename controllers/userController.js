@@ -80,36 +80,54 @@ exports.getUserById = async (req, res) => {
 exports.updateUser = async (req, res) => {
     try{
         const id = req.params.userId;
-        const { name, email, password } = req.body;
+        const data = req.body;
 
-        const user = await userModel.findById('65371db6d613a9dab1ceae80');
-        console.log(user);
-
-        if (!name || name.trim().length === 0 || name.length < 3) {
-            return res.status(400).json({ message: 'Nombre no válido' });
-        };
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email || !email.match(emailRegex)) {
-            return res.status(400).json({ message: 'Correo electrónico no válido' });
-        };
-
-        if (!password || password.length < 6) {
-            return res.status(400).json({ message: 'Contraseña no válida' });
+        if (data.name){
+            if (data.name.trim().length === 0 || data.name.length < 3) {
+                return res.status(400).json({ message: 'Nombre no válido' });
+            }
         }
 
-        const passwordHash = await bcrypt.hash(password, salt);
+        if (data.email){
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!data.email || !data.email.match(emailRegex)) {
+                return res.status(400).json({ message: 'Correo electrónico no válido' });
+            };                           
+        }                      
+
+        if (data.password){
+            if (!data.password || data.password.length < 6) {
+                return res.status(400).json({ message: 'Contraseña debe ser de al menos 6 caracteres' });
+            };
+            
+            const passwordHash = await bcrypt.hash(data.password, salt);
+
+            data.password = passwordHash;
+        };
 
         const filter = { _id: id };
-        const update = { name, email, password: passwordHash, updatedAt: Date.now() };
+
+        let update = {};
+
+        if (data.deleteImg){
+            const currentUserData = await userModel.findById(id);
+            currentUserData.profileImg = null;
+
+            // console.log('currentUserData', currentUserData);
+            
+            update = { ...currentUserData, updatedAt: Date.now() };
+        } else {
+            update = { ...data, updatedAt: Date.now() };
+        }
 
         const result = await userModel.findOneAndUpdate(filter, update);
 
         if (!result){
             return res.status(404).json({message: 'No se encontró ningún usuario con ese id'});
+        } else {
+            const user = await userModel.findById(id);
+            res.status(200).json({message: 'Usuario actualizado con éxito', user});
         }
-
-        res.status(200).json({message: 'Usuario actualizado con éxito', user: result});
 
     }catch(error){
         console.log(error);

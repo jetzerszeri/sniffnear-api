@@ -10,6 +10,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    profileImg: String,
     password: {
         type: String,
         required: true
