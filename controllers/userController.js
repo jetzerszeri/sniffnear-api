@@ -124,6 +124,9 @@ exports.updateUser = async (req, res) => {
 
         const filter = { _id: id };
         
+        if (data.profileImg){
+            update.profileImg = data.profileImg;
+        }
 
         
         if (data.deleteImg){
