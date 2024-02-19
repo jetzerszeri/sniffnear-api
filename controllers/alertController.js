@@ -48,12 +48,24 @@ exports.crearAlerta = async (req, res) => {
 // Modificar una alerta por su ID
 exports.modificarAlerta = async (req, res) => {
   try {
-    const { title, description, status } = req.body;
+    // const { title, description, status } = req.body;
     const alertaId = req.params.id;
-
+    const updateData = {
+      type: req.body.type,
+      size: req.body.size, 
+      color1: req.body.color1, 
+      sex:req.body.sex,
+      description: req.body.description,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+      date: req.body.date,
+      time: req.body.time,
+      img: req.body.img,
+    }
     const alerta = await Alert.findByIdAndUpdate(
       alertaId,
-      { title, description, status },
+      // { title, description, status },
+      { $set: updateData},
       { new: true }
     );
 
