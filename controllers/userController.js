@@ -80,36 +80,71 @@ exports.getUserById = async (req, res) => {
 exports.updateUser = async (req, res) => {
     try{
         const id = req.params.userId;
-        const { name, email, password } = req.body;
+        const data = req.body;
+        const currentUserData = await userModel.findById(id);
+        let update = {};
 
-        const user = await userModel.findById('65371db6d613a9dab1ceae80');
-        console.log(user);
+        if (data.name){
+            if ( !data.name || data.name.trim().length === 0  ) {
+                return res.status(400).json({ message: 'Nombre no válido' });
+            }
+            update.name = data.name;
+        } 
+        
+        if (data.email || data.email === ''){
+            const email = data.email;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const emailTaken = await userModel.findOne({email});
 
-        if (!name || name.trim().length === 0 || name.length < 3) {
-            return res.status(400).json({ message: 'Nombre no válido' });
+            if (!data.email || !data.email.match(emailRegex)) {
+                return res.status(400).json({ message: 'Correo electrónico no válido' });
+            } else if (emailTaken && emailTaken._id.toString() !== id){
+                return res.status(409).json({message: 'El emai que pusiste ya está registrado, por favor elegí otro'});
+            } 
+            
+            update.email = email;                         
+        }                    
+
+        if (data.password){
+
+            if ( !data.currentPassword ){
+                return res.status(400).json({ message: 'Para cambiar la contraseña, debes ingresar tu contraseña actual' });
+            } else {
+                const passwordMatch = await bcrypt.compare(data.currentPassword, currentUserData.password);
+                if (!passwordMatch){
+                    return res.status(400).json({message: 'La contraseña actual es incorrecta'});
+                } else if (data.password.length < 6){
+                    return res.status(400).json({message: 'La nueva contraseña debe ser de al menos 6 caracteres'});
+                }
+            }
+
+            const passwordHash = await bcrypt.hash(data.password, salt);
+            update.password = passwordHash;
         };
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email || !email.match(emailRegex)) {
-            return res.status(400).json({ message: 'Correo electrónico no válido' });
-        };
-
-        if (!password || password.length < 6) {
-            return res.status(400).json({ message: 'Contraseña no válida' });
-        }
-
-        const passwordHash = await bcrypt.hash(password, salt);
 
         const filter = { _id: id };
-        const update = { name, email, password: passwordHash, updatedAt: Date.now() };
+        
+        if (data.profileImg){
+            update.profileImg = data.profileImg;
+        }
+
+        
+        if (data.deleteImg){
+            update.profileImg = null;
+            // update = { ...currentUserData, updatedAt: Date.now() };
+        } 
+        // else {
+            update = { ...update, updatedAt: Date.now() };
+        // }
 
         const result = await userModel.findOneAndUpdate(filter, update);
 
         if (!result){
             return res.status(404).json({message: 'No se encontró ningún usuario con ese id'});
+        } else {
+            const user = await userModel.findById(id);
+            res.status(200).json({message: 'Usuario actualizado con éxito', user});
         }
-
-        res.status(200).json({message: 'Usuario actualizado con éxito', user: result});
 
     }catch(error){
         console.log(error);
@@ -149,7 +184,7 @@ exports.auth = async (req, res) => {
             return res.status(404).json({message: 'No se encontró ningun usuario con ese email'});
         }
     
-        //verifico si es el email correcto:
+        //verifico si es el la clave es correcta:
         const passwordMatch = await bcrypt.compare(password, user.password);
     
         if (!passwordMatch){
@@ -163,7 +198,8 @@ exports.auth = async (req, res) => {
         res.status(200).json({
             message: 'Autenticación exitosa', 
             userId: user._id,
-            token
+            token,
+            user
         });
 
     }catch(error){

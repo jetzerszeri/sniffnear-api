@@ -3,7 +3,7 @@ const Alert = require('../models/alertModel');
 // Crear una nueva alerta
 exports.crearAlerta = async (req, res) => {
   try {
-    const {alertType, type, size, color1, color2, breed, description, latitude, longitude, date, time, img, personName, email, password, creator, pet, status, sex, petName } = req.body;
+    const {alertType, type, size, color1, color2, breed, description, latitude, longitude, date, time, img, personName, email, password, creator, pet, status, sex, petName, state,city,country } = req.body;
 
     // const userId = req.usuario; 
     // if(!alertType || !description || !status){
@@ -30,6 +30,9 @@ exports.crearAlerta = async (req, res) => {
       status,
       sex,
       petName,
+      state,
+      city,
+      country,
     });
 
    
@@ -48,12 +51,24 @@ exports.crearAlerta = async (req, res) => {
 // Modificar una alerta por su ID
 exports.modificarAlerta = async (req, res) => {
   try {
-    const { title, description, status } = req.body;
+    // const { title, description, status } = req.body;
     const alertaId = req.params.id;
-
+    const updateData = {
+      type: req.body.type,
+      size: req.body.size, 
+      color1: req.body.color1, 
+      sex:req.body.sex,
+      description: req.body.description,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+      date: req.body.date,
+      time: req.body.time,
+      img: req.body.img,
+    }
     const alerta = await Alert.findByIdAndUpdate(
       alertaId,
-      { title, description, status },
+      // { title, description, status },
+      { $set: updateData},
       { new: true }
     );
 
