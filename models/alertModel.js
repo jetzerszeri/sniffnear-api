@@ -65,8 +65,16 @@ const alertSchema = new Schema({
     status:{
         type: String,
         default: 'active'
-    }
-
+    },
+    state:{
+        type:String,   
+    },
+    city:{
+        type:String,
+    },
+    country:{
+        type:String,
+    },
 })
 
 const Alert = mongoose.model( 'Alert',alertSchema );
