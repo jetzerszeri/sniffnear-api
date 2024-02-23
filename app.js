@@ -17,9 +17,18 @@ dataBase.once('open', () => console.log('Conectado a la DB'));
 
 //Creacion servidor http
 const server = http.createServer(app);
-// const io = socketIo(server);
-const io = socketIo("https://sniffnear-api.onrender.com")
-
+// Configuración de socket.io
+const io = socketIo(server, {
+    cors: {
+        origin: '*'
+    }
+});
+app.use('/socket.io', (req, res) => {
+    // Aquí puedes agregar cualquier lógica necesaria para manejar las solicitudes de Socket.IO
+    console.log('Solicitud recibida en la ruta /socket.io');
+    // Envía una respuesta 200 OK
+    res.sendStatus(200);
+});
 //Conexion con socket
 io.on('connection', (socket) => {
     console.log('Un cliente se ha conectado');
