@@ -17,22 +17,25 @@ dataBase.once('open', () => console.log('Conectado a la DB'));
 
 //Creacion servidor http
 const server = http.createServer(app);
+const io = socketIo(server);
 
-//Config de socket.io
-const io = require('socket.io')(server, {
-    cors: {
-        origin: '*'
-    }
-});
 
 //Conexion con socket
-io.on('connection', socket => {
-    console.log('Usuario conectado');
-
-    socket.on('disconnect', () => {
-        console.log('Usuario desconectado');
+io.on('connection', (socket) => {
+    console.log('Un cliente se ha conectado');
+  
+    // Manejar evento 'chatsUpdated'
+    socket.on('chatsUpdated', (updatedChats) => {
+      console.log('Chats actualizados:', updatedChats);
+      // Aquí puedes emitir los chats actualizados a todos los clientes conectados
+      io.emit('chatsUpdated', updatedChats);
     });
-});
+  
+    socket.on('disconnect', () => {
+      console.log('Un cliente se ha desconectado');
+    });
+  });
+  
 
 
 app.get('/', (req, res) => {
