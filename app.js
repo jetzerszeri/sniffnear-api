@@ -17,8 +17,8 @@ dataBase.once('open', () => console.log('Conectado a la DB'));
 
 //Creacion servidor http
 const server = http.createServer(app);
-const io = socketIo(server);
-
+// const io = socketIo(server);
+const io = socketIo("https://sniffnear-api.onrender.com")
 
 //Conexion con socket
 io.on('connection', (socket) => {
@@ -48,6 +48,8 @@ routerApi(app);
 
 
 app.listen(port, () => {
+    //el socket que escuhcha
+    console.log(io)
     console.log(`Server is running on port ${port}`);
     console.log(`Updated: ${new Date().toLocaleString()}`);
 });
