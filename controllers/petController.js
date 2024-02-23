@@ -96,3 +96,30 @@ exports.updatePet = async (req, res) => {
     }
 }
 
+
+exports.deletePet = async (req, res) => {
+    try{
+        const id = req.params.id;
+        const data = req.body;
+
+        const pet = await petModel.findById(id);
+        if(!pet){
+            return res.status(404).json({message: 'No se encontró ninguna mascota con ese id'});
+        }
+
+        if(data.owner !== pet.owner.toString()){
+            return res.status(401).json({message: 'No tenés permiso para eliminar este perfil'});
+        }
+        const result = await petModel.findByIdAndDelete(id);
+
+        if(!result){
+            return res.status(404).json({message: 'No se encontró ninguna mascota con ese id'});
+        }
+
+        res.status(200).json({message: 'Perfil de mascota eliminado con éxito', result});
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({message: 'Hubo un error en el servidor'});
+    }
+};
