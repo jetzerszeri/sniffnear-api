@@ -64,31 +64,31 @@ exports.getPetById = async (req, res) => {
 exports.updatePet = async (req, res) => {
     try{
         id = req.params.id;
-        const { name, breed, type, age, description, img, owner, sex } = req.body;
+        const data = req.body;
 
-        if (!name || !type) {
-            return res.status(400).json({ msg: 'Los campos name y type son obligatorios' });
+        if (!data.name) {
+            return res.status(400).json({ message: 'El nombre es obligatorio' });
+        }
+        if (!data.type) {
+            return res.status(400).json({ message: 'El tipo de mascota es obligatorio' });
         }
 
         const filter = { _id: id };
-        const update = {
-            name,
-            breed,
-            type,
-            age,
-            description,
-            img,
-            sex,
-            updatedAt: Date.now()
-        };
 
-        const result = await petModel.findByIdAndUpdate(filter, update);
+        if (data.deleteImg){
+            data.img = null;
+        }
+
+        data.updatedAt = Date.now();
+
+        const result = await petModel.findByIdAndUpdate(filter, data);
 
         if(!result){
             return res.status(404).json({message: 'No existe una mascota con ese ID'});
         }
 
-        res.status(200).json({message: 'Mascota actualizada con éxito', result});
+        const pet = await petModel.findById(id);
+        res.status(200).json({message: 'Mascota actualizada con éxito', pet});
 
     }catch(error){
         console.log(error);
