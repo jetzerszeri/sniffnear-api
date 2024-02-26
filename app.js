@@ -20,8 +20,9 @@ const server = http.createServer(app);
 // Configuración de socket.io
 const io = socketIo(server, {
     cors: {
-        origin: '*'
-    }
+        origin: "*",
+        methods: ["GET", "POST"],
+      },
 });
 app.use('/socket.io', (req, res) => {
     // Aquí puedes agregar cualquier lógica necesaria para manejar las solicitudes de Socket.IO
