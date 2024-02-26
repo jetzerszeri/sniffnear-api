@@ -3,27 +3,32 @@ const dataBase = require('./dataBase');
 const routerApi = require('./routes');
 const cors = require('cors');
 const http = require('http')
-const socketIo = require('socket.io');
+const { Server } = require("socket.io");
 
 const app = express();
 const port = 3000;
-
+const server = http.createServer(app);
 app.use(express.json());
 app.use(cors());
+const io = new Server(server,{
+  cors:{
+    origin: "*" 
+  }
 
+})
 //me conecto a la DB
 dataBase.once('error', () => console.log('Error al conectar a la DB'));
 dataBase.once('open', () => console.log('Conectado a la DB'));
 
 //Creacion servidor http
-const server = http.createServer(app);
+
 // Configuración de socket.io
-const io = socketIo(server, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"],
-      },
-});
+// const io = socketIo(server, {
+//     cors: {
+//         origin: "http://localhost:3000",
+//         methods: ["GET", "POST"],
+//       },
+// });
 app.use('/socket.io', (req, res) => {
     // Aquí puedes agregar cualquier lógica necesaria para manejar las solicitudes de Socket.IO
     console.log('Solicitud recibida en la ruta /socket.io');
