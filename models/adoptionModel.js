@@ -36,7 +36,7 @@ const adoptionSchema = new Schema({
     ubication: {
         type: String,
     },
-    description: {
+    content: {
         type: String,
     },
     created: {
