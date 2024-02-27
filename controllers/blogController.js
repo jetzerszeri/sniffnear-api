@@ -2,12 +2,13 @@ const Blog = require('../models/blogModel');
 
 exports.crearBlog = async (req, res) => {
   try {
-    const { blogType, type, title, content, category, img, creator} = req.body;
+    const { blogType, type, title, content, owner, category, img, creator} = req.body;
 
     const blog = new Blog({
       blogType, 
       type, 
       title, 
+      owner,
       content,
       category,
       img,
@@ -29,12 +30,12 @@ exports.crearBlog = async (req, res) => {
 // Modificar una blog por su ID
 exports.modificarBlog = async (req, res) => {
   try {
-    const { title, description, category, status } = req.body;
+    const { title, description, category, img, status } = req.body;
     const blogId = req.params.id;
 
     const blog = await Blog.findByIdAndUpdate(
       blogId,
-      { title, description, category, status },
+      { title, description, category, img, status },
       { new: true }
     );
 

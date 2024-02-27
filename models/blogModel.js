@@ -17,6 +17,12 @@ const blogSchema = new Schema({
     category: {
         type: String,
     },
+    img: {
+        type: String,
+    },
+    owner: {
+        type: String,
+    },
     created: {
         type: Date,
         default: Date.now
@@ -29,10 +35,6 @@ const blogSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Pet'
     }
-    // status:{
-    //     type: String,
-    //     default: 'active'
-    // }
 
 })
 
