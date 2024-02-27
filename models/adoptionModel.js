@@ -33,7 +33,7 @@ const adoptionSchema = new Schema({
     img: {
         type: String,
     },
-    ubication: {
+    city: {
         type: String,
     },
     content: {
