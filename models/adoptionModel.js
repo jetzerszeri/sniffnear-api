@@ -33,6 +33,12 @@ const adoptionSchema = new Schema({
     img: {
         type: String,
     },
+    ubication: {
+        type: String,
+    },
+    description: {
+        type: String,
+    },
     created: {
         type: Date,
         default: Date.now
