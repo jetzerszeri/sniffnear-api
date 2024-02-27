@@ -27,10 +27,10 @@ const blogSchema = new Schema({
         type: Date,
         default: Date.now
     },
-   creator: {
+    creator: {
         type: Schema.Types.ObjectId,
         ref: 'User' 
-   },
+    },
     pet:{
         type: Schema.Types.ObjectId,
         ref: 'Pet'
