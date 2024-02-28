@@ -33,6 +33,7 @@ exports.crearAlerta = async (req, res) => {
       state,
       city,
       country,
+      breedType,
     });
 
    
@@ -40,6 +41,8 @@ exports.crearAlerta = async (req, res) => {
 
     res.status(201).json({
       msg: 'Alerta creada exitosamente',
+      message: 'Alerta creada exitosamente',
+      alert: alerta,
       data: alerta,
     });
   } catch (error) {

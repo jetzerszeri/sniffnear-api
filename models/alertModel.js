@@ -75,6 +75,9 @@ const alertSchema = new Schema({
     country:{
         type:String,
     },
+    breedType:{
+        type:String,
+    }
 })
 
 const Alert = mongoose.model( 'Alert',alertSchema );
