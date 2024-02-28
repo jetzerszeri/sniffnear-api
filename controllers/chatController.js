@@ -74,3 +74,22 @@ exports.getMessagesInRoom = async (req, res) => {
       res.status(500).json({ error: "Error al obtener los mensajes de la sala de chat" });
   }
 };
+
+//buscar una sala de chat
+exports.findChatRoom = async (req, res)=>{
+     const {emisorId, destinatarioId} = req.body;
+    try {
+        const existingRoom = await Chat.findOne({
+            participants:{ $all: [emisorId, destinatarioId]}
+        })
+       if(existingRoom){
+        console.log("sala encontrada")
+        res.status(200).json(existingRoom);
+       }else{
+        return res.status(404).json({ message: 'No se encontró ninguna sala existente.' });
+       }
+
+    } catch (error) {
+        console.error('Error al buscar la sala de chat existente:', error);
+    }
+}

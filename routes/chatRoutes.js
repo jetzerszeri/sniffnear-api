@@ -14,5 +14,6 @@ router.post('/:roomId/send-message', chatController.sendMessage);
 // Ruta para obtener todos los mensajes de una sala de chat específica
 router.get('/:roomId/messages', chatController.getMessagesInRoom);
 
+router.post('/find', chatController.findChatRoom);
 module.exports = router;
 
