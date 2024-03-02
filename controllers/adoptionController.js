@@ -59,7 +59,7 @@ exports.modificarAdoption = async (req, res) => {
       return res.status(404).json({ msg: 'Adopción no encontrada' });
     }
 
-    const adoptionActualizada = await adoption.findById(adoptionId);
+    const adoptionActualizada = await Adoption.findById(adoptionId);
     res.json({
       msg: 'Adopción modificada exitosamente',
       data: adoptionActualizada,
