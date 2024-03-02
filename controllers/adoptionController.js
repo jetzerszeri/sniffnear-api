@@ -42,22 +42,27 @@ exports.crearAdoption = async (req, res) => {
 // Modificar una adopción por su ID
 exports.modificarAdoption = async (req, res) => {
   try {
-    const { title, description, status } = req.body;
+    const data = req.body;
     const adoptionId = req.params.id;
 
-    const adoption = await Adoption.findByIdAndUpdate(
-      adoptionId,
-      { title, description, status },
-      { new: true }
-    );
+    const filter = {_id: adoptionId };
+    // const adoption = await Adoption.findByIdAndUpdate(
+    //   adoptionId,
+    //   { title, description, status },
+    //   { new: true }
+    // );
+
+
+    const adoption = await Adoption.findByIdAndUpdate(filter, data);
 
     if (!adoption) {
       return res.status(404).json({ msg: 'Adopción no encontrada' });
     }
 
+    const adoptionActualizada = await adoption.findById(adoptionId);
     res.json({
       msg: 'Adopción modificada exitosamente',
-      data: adoption,
+      data: adoptionActualizada,
     });
   } catch (error) {
     console.error('Error al modificar la adopción:', error);
