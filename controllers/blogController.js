@@ -30,25 +30,25 @@ exports.crearBlog = async (req, res) => {
 // Modificar una blog por su ID
 exports.modificarBlog = async (req, res) => {
   try {
-    const { title, description, category, img, status } = req.body;
+    const { title, description, category, img, status, content } = req.body;
     const blogId = req.params.id;
 
     const blog = await Blog.findByIdAndUpdate(
       blogId,
-      { title, description, category, img, status },
+      { title, description, category, img, status, content },
       { new: true }
     );
 
     if (!blog) {
-      return res.status(404).json({ msg: 'Blog no encontrado' });
+      return res.status(404).json({ msg: 'Post no encontrado' });
     }
 
     res.json({
-      msg: 'Blog modificado exitosamente',
+      msg: 'Post modificado exitosamente',
       data: blog,
     });
   } catch (error) {
-    console.error('Error al modificar el blog:', error);
+    console.error('Error al modificar el post:', error);
     res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
