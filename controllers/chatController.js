@@ -77,10 +77,10 @@ exports.getMessagesInRoom = async (req, res) => {
 
 //buscar una sala de chat por participantes
 exports.findChatRoom = async (req, res)=>{
-     const {emisorId, destinatarioId} = req.body;
+     const {sender , receptor} = req.body;
     try {
         const existingRoom = await Chat.findOne({
-            participants:{ $all: [emisorId, destinatarioId]}
+            participants:{ $all: [sender , receptor]}
         })
        if(existingRoom){
         console.log("sala encontrada")
