@@ -111,3 +111,19 @@ exports.getChatRoomById = async (req, res) => {
         res.status(500).json({ error: 'Error al obtener la sala de chat' });
     }
 };
+
+//eliminar sala
+exports.deleteChatRoom = async (req, res) => {
+    try {
+        const roomId = req.params.roomId;
+        const chatRoom = await Chat.findById(roomId);
+        if (!chatRoom) {
+            return res.status(404).json({ msg: 'Sala de chat no encontrada' });
+        }
+        await chatRoom.deleteOne(); 
+        return res.status(200).json({ msg: 'Sala de chat eliminada exitosamente' });
+    } catch (error) {
+        console.error('Error al eliminar la sala de chat:', error);
+        return res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+};
