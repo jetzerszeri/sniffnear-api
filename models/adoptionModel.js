@@ -27,6 +27,9 @@ const adoptionSchema = new Schema({
     breed: {
         type: String,
     },
+    breedType: {
+        type: String,
+    },
     owner: {
         type: String,
     },

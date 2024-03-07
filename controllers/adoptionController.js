@@ -3,7 +3,7 @@ const Adoption = require('../models/adoptionModel');
 // Crear una nueva adopción
 exports.crearAdoption = async (req, res) => {
   try {
-    const {adoptionType, type, size, birthdate, color1, name, breed, city, content, img, sex, owner, creator, pet } = req.body;
+    const {adoptionType, type, size, birthdate, breedType, color1, name, breed, city, content, img, sex, owner, creator, pet } = req.body;
 
     // const userId = req.usuario; 
     // if(!adoptionType || !description || !status){
@@ -15,6 +15,7 @@ exports.crearAdoption = async (req, res) => {
       name,
       birthdate,
       breed,
+      breedType,
       sex,
       size,
       color1,
@@ -46,13 +47,7 @@ exports.modificarAdoption = async (req, res) => {
     const adoptionId = req.params.id;
 
     const filter = {_id: adoptionId };
-    // const adoption = await Adoption.findByIdAndUpdate(
-    //   adoptionId,
-    //   { title, description, status },
-    //   { new: true }
-    // );
-
-
+ 
     const adoption = await Adoption.findByIdAndUpdate(filter, data);
 
     if (!adoption) {
