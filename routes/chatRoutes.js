@@ -20,5 +20,8 @@ router.post('/find', chatController.findChatRoom);
 //Ruta para obtener sala por ID
 router.get('/room/:roomId', chatController.getChatRoomById)
 
+//Eliminar la sala por id
+router.delete('/delete/:roomId', chatController.deleteChatRoom)
+
 module.exports = router;
 
