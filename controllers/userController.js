@@ -32,7 +32,7 @@ exports.addUser = async (req, res) => {
 
         const user = new userModel({
             name,
-            email,
+            email: email.toLowerCase(),
             password: passwordHash
         });
 
@@ -92,7 +92,7 @@ exports.updateUser = async (req, res) => {
         } 
         
         if (data.email || data.email === ''){
-            const email = data.email;
+            const email = data.email.toLowerCase();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             const emailTaken = await userModel.findOne({email});
 
@@ -178,8 +178,8 @@ exports.auth = async (req, res) => {
         if (!email || !password){
             return res.status(400).json({message: 'Email y contraseña son requeridos'});
         }
-    
-        const user = await userModel.findOne({email});
+        
+        const user = await userModel.findOne({email: email.toLowerCase()});
         if (!user){
             return res.status(404).json({message: 'No se encontró ningun usuario con ese email'});
         }
