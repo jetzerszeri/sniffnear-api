@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+const Message = require ('../models/messageModel.js')
 const chatRoomSchema = new Schema({
     // usuarios que participan en la sala de chat
     participants: [{ type: Schema.Types.ObjectId, ref: 'User' }],
@@ -11,6 +11,14 @@ const chatRoomSchema = new Schema({
     updatedAt: {
         type: Date,
         default: Date.now()
+    }
+});
+chatRoomSchema.pre('deleteOne', { document: true }, async function(next) {
+    try {
+        await Message.deleteMany({ chatRoom: this._id });
+        next();
+    } catch (error) {
+        next(error);
     }
 });
 

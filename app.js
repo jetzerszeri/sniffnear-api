@@ -26,12 +26,13 @@ io.on("connection",(socket) => {
   })
   socket.on('sendMessage',async (data)=>{
     try{
-      const {roomId, sender, text} = data;
+      const {roomId, sender, text, createdAt} = data;
      
       const newMessage = new Message ({
         chatRoom:roomId,
         sender:sender,
         text:text,
+        createdAt:createdAt,
       });
       
       await newMessage.save();
